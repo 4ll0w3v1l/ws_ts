@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link rel="stylesheet" href="static/css/login.css">
+</head>
+<body onload="onloadFunction()">
+	<div class="logo">
+		<div class="square"></div>
+		<h3>ВЫСОКОТОЧНАЯ МЕХАНИКА</h3>
+	</div>
+	<input id="email" type="email" name="email" placeholder="E-mail">
+	<input id="pass" type="password" name="password" placeholder="Password">
+	<div class="actions">
+		<button id="login_btn" onclick="login()">Login</button>
+		<p onclick="redirect_to_reg()" class="reg_btn">Register?</p>
+	</div>
+</body>
+<script type="text/javascript">
+	
+	const xhttp = new XMLHttpRequest();
+	function onloadFunction() {
+		document.getElementsByClassName("actions")[0].style.width = document.getElementById("email").clientWidth + "px";
+	}
+
+	function login() {
+		
+		e = document.getElementById("email").value;
+		p =  document.getElementById("pass").value;
+		xhttp.open("POST", "/login_action", true);
+  		xhttp.setRequestHeader("Content-Type", "application/json");
+  		xhttp.setRequestHeader("Web", "1");
+  		xhttp.onload = function(){
+  			if (xhttp.status == 200){
+  				resp = JSON.parse(xhttp.responseText);
+
+				if (resp["status"] == "failed"){
+					alert('failed')
+				}
+				if (resp["status"] == "success"){
+					alert('success')
+				}
+		  	}
+  		}
+
+		xhttp.send(JSON.stringify({email:e, password:p}));
+		
+	}
+	function redirect_to_reg(){
+		window.location.href = "/registration";
+	}
+  	
+</script>
+</html>

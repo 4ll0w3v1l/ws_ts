@@ -1,0 +1,48 @@
+*{
+	margin: 0px;
+}
+body{
+	overflow: hidden;
+	height: 100vh;
+	display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+body *{
+	margin-bottom: 20px;
+}
+input{
+	padding: 10px 20px 10px 5px ;
+}
+.logo{
+	display: flex;
+	flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+	position: absolute;
+	top:20px;
+	left: 20px;
+}
+.square{
+	height: 30px;
+	width: 30px;
+	border-radius: 8px;
+	background-color: grey;
+}
+.actions{
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1px;
+}
+.reg_btn{
+	text-decoration: underline;
+	cursor: pointer;
+}
+button{
+	cursor: pointer;
+}
