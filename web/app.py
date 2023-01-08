@@ -22,6 +22,11 @@ def admin_panel():
     return render_template('admin.html')
 
 
+@app.route("/")
+def main_page():
+    return render_template('main.html')
+
+
 @app.route('/login_action', methods=['POST'])
 def login_action():
     if request.headers['Web']:
@@ -40,7 +45,6 @@ def registration_action():
         n = request.json['name']
         e = request.json['email']
         p = request.json['password']
-        print(f'{n}, {e}, {p}')
         s = db.register('users', e, n, p)
 
         if s:

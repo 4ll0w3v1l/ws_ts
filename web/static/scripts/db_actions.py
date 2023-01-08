@@ -9,7 +9,7 @@ def create():
     cur = con.cursor()
     cur.executescript(
         'CREATE TABLE users(email varchar(255) PRIMARY KEY, "name" text, password text, role text);'
-        'CREATE TABLE tasks(id int PRIMARY KEY, creation_date timestamp, status text, last_reassignment timestamp, reject_reason text, agreed_production int, agreed_economy int, client_name text, client_phone text, client_email text, description text, short_description text, current_worker varchar(250), creator varchar(250), FOREIGN KEY ("current_worker") REFERENCES users(email), FOREIGN KEY ("creator") REFERENCES users(email));'
+        'CREATE TABLE tasks(id int PRIMARY KEY, creation_date timestamp, status text, last_reassignment timestamp, agreed_production int, agreed_economy int, client_name text, client_phone text, client_email text, description text, short_description text, current_worker varchar(250), creator varchar(250), FOREIGN KEY ("current_worker") REFERENCES users(email), FOREIGN KEY ("creator") REFERENCES users(email));'
         'CREATE TABLE documentations(id int PRIMARY KEY, doc_type varchar(250), creator varchar(250), doc_name varchar(250), doc_path text, FOREIGN KEY (creator) REFERENCES users(email));'
         )
 
