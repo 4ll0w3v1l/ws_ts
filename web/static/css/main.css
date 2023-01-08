@@ -1,0 +1,88 @@
+*{
+	margin: 0px;
+}
+
+:root{
+	--primary: #91a3b1;
+}
+
+header{
+	padding: 10px 50px 10px 50px;
+	margin-bottom: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: var(--primary);
+}
+.logo{
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+.logo img{
+	height: 80px;
+}
+.profile{
+	height: 40px;
+}
+main{
+	margin: 10px 50px 10px 50px;
+	display: flex;
+	flex-direction: column;
+	gap: 50px;
+}
+.buttons{
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+.requests{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.requests button{
+	display: flex;
+	flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+	height: 50px;
+	width: 10%;
+	background-color: #FFF;
+}
+.requests button:hover{
+	display: flex;
+	flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+	height: 50px;
+	width: 10%;
+	background-color: lightgrey;
+}
+.requests button:active{
+	display: flex;
+	flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+	height: 50px;
+	width: 10%;
+	background-color: grey;
+}
+
+button img{
+	height: 20px;
+}
+table {
+    border-collapse: collapse;
+    letter-spacing: 1px;
+}
+thead{
+	background-color: var(--primary);
+}
+td,
+th {
+    border: 1px solid ;
+}
+th{
+	text-align: left;
+}
