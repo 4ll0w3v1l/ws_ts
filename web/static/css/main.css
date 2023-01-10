@@ -94,6 +94,12 @@ th {
 th{
 	text-align: left;
 }
+tbody tr{
+	cursor: pointer;
+}
+tbody tr:hover{
+	background-color: lightgrey;
+}
 .new_request_overlay_wrapper{
 	visibility: hidden;
   	top: 0; left: 0; bottom: 0; right: 0;
@@ -153,4 +159,36 @@ th{
 #send_request:active{
 	padding: 5px 10px 5px 10px;
 	background-color: #f2ffda;
+}
+.task_editing_wrapper{
+  	top: 0; left: 0; bottom: 0; right: 0;
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.task_editing{
+	display: flex;
+	flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    background-color: white;
+	padding: 20px;
+	border: 3px solid;
+}
+.task_editing img{
+	width: 20px;
+	cursor: pointer;
+}
+.task_editing div{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 15px;
+}
+.task_editing .header_wrapper{
+	display: flex;
 }

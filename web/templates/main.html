@@ -22,7 +22,7 @@
 		</div>
 		<div class="requests">
 			<h1>Заявки клиентов</h1>
-			<button id="open_new_request">Добавить заявку <img src="static/icons/plus.png"></button>
+			<button id="open_new_request">Добавить<img src="static/icons/plus.png"></button>
 		</div>
 		<table>
 			<thead>
@@ -36,7 +36,7 @@
 			</thead>
 			<tbody>
 				{% for x in range(l) %}
-				<tr>
+				<tr class="table_row" id="{{x + 1}}">
 					<th>{{table['id'][x]}}</th>
 					<th>{{table['creation_date'][x] | ctime}}</th>
 					<th>{{table['client_name'][x]}}</th>
@@ -60,8 +60,8 @@
 			</div>
 			<div>
 				<div>
-					<h3>ФИО клиента</h3>
-					<input id="client_name" type="text" required></p>
+					<h3>Клиент</h3>
+					<input id="client_name" type="text" placeholder="ФИО / название" required></p>
 				</div>
 				<div>
 					<h3>Телефон клиента</h3>
@@ -77,11 +77,22 @@
 			</div>
 			<div class="description_div">
 				<h3>Описание</h3>
-				<input id="short_description" type="text" required></p>
+				<textarea id="short_description"  required></textarea>
 			</div>
 			<p id="error" style="font-weight:bold; color: red; display: none;">Проверьте заполненность всех полей</p>
 			<div class="send_req_wrapper">
 				<button id="send_request">Сохранить</button>
+			</div>
+		</div>
+	</div>
+	<div class="task_editing_wrapper">
+		<div class="task_editing">
+			<div class="header_wrapper">
+				<div class="header">
+					<h2>Заявка № 1</h2>
+					<p> - статус</p>
+				</div>
+				<button>Разместить</button>
 			</div>
 		</div>
 	</div>
@@ -91,6 +102,10 @@
 
 	document.getElementById("open_new_request").addEventListener("click", function(){open_new_request()}, false);
 	document.getElementById("send_request").addEventListener("click", function(){send_new_request()}, false);
+	let rows = document.getElementsByClassName("table_row");
+	for (let i = 0; i<rows.length; i++){
+		rows[i].addEventListener("click", function(){edit_task(this.id)}, false);
+	}
 
 	function open_new_request(){
 		document.getElementsByClassName("new_request_overlay_wrapper")[0].style.visibility = "visible";
@@ -133,5 +148,8 @@
 	  		xhttp.send(JSON.stringify({name:n, phone:p, country_code:cc, email:e, desc:d}));
 		}
 	};
+	function edit_task(id){
+		alert(id);
+	}
 </script>
 </html>
