@@ -22,7 +22,7 @@
 		</div>
 		<div class="requests">
 			<h1>Заявки клиентов</h1>
-			<button>Добавить заявку <img src="static/icons/plus.png"></button>
+			<button id="open_new_request">Добавить заявку <img src="static/icons/plus.png"></button>
 		</div>
 		<table>
 			<thead>
@@ -41,10 +41,123 @@
 					<th>123123</th>
 					<th>12312312</th>
 					<th>12312321</th>
-					
+				</tr>
+				<tr>
+					<th>1</th>
+					<th>1232132</th>
+					<th>123123</th>
+					<th>12312312</th>
+					<th>12312321</th>
+				</tr>
+				<tr>
+					<th>1</th>
+					<th>1232132</th>
+					<th>123123</th>
+					<th>12312312</th>
+					<th>12312321</th>
+				</tr>
+				<tr>
+					<th>1</th>
+					<th>1232132</th>
+					<th>123123</th>
+					<th>12312312</th>
+					<th>12312321</th>
+				</tr>
+				<tr>
+					<th>1</th>
+					<th>1232132</th>
+					<th>123123</th>
+					<th>12312312</th>
+					<th>12312321</th>
 				</tr>
 			</tbody>
 		</table>
 	</main>
+	<div class="new_request_overlay_wrapper">
+		<div class="new_request_overlay">
+			<div class="header">
+				<h2>Новая заявка</h2>
+				<img src="static/icons/cross.png" onclick="hide_new_request()">
+			</div>
+			
+			<div>
+				<h3>Номер</h3>
+				<p id="task_number">1</p>
+			</div>
+			<div>
+				<div>
+					<h3>ФИО клиента</h3>
+					<input id="client_name" type="text" required></p>
+				</div>
+				<div>
+					<h3>Телефон клиента</h3>
+					<div style="display: flex; gap:5px">
+						<input id="client_phone_country" style="font-weight: bold; width:30px; text-align: right; " value="+7">
+						<input id="client_phone" type="phone" name="phone" placeholder="123 123 1122"></p>
+					</div>
+				</div>
+				<div>
+					<h3>E-mail клиента</h3>
+					<input id="client_email" type="text" name="email" required></p>
+				</div>
+			</div>
+			<div class="description_div">
+				<h3>Описание</h3>
+				<input id="short_description" type="text" required></p>
+			</div>
+			<p id="error" style="font-weight:bold; color: red; display: none;">Проверьте заполненность всех полей</p>
+			<div class="send_req_wrapper">
+				<button id="send_request">Сохранить</button>
+			</div>
+		</div>
+	</div>
 </body>
+<script type="text/javascript">
+	const xhttp = new XMLHttpRequest();
+
+	document.getElementById("open_new_request").addEventListener("click", function(){open_new_request()}, false);
+	document.getElementById("send_request").addEventListener("click", function(){send_new_request()}, false);
+
+	function open_new_request(){
+		document.getElementsByClassName("new_request_overlay_wrapper")[0].style.visibility = "visible";
+	};
+	function hide_new_request(){
+		document.getElementsByClassName("new_request_overlay_wrapper")[0].style.visibility = "hidden";
+	};
+	function hide_error(){
+		return new Promise(() => {
+			setTimeout(() => {
+				document.getElementById("error").style.display = "none";
+			}, 2000);
+		})
+	};
+	function send_new_request(){
+		n = document.getElementById("client_name").value;
+		p = document.getElementById("client_phone").value;
+		cc = document.getElementById("client_phone_country").value;
+		e = document.getElementById("client_email").value;
+		d = document.getElementById("short_description").value;
+		if (n == "" || p == "" || cc == "" || e == "" || d == ""){
+			document.getElementById("error").style.display = "";
+			hide_error();
+		}else{
+			xhttp.open("POST", "/new_request", true);
+	  		xhttp.setRequestHeader("Content-Type", "application/json");
+	  		xhttp.setRequestHeader("Web", "1");
+	  		xhttp.onload = function(){
+	  			if (xhttp.status == 200){
+  					resp = JSON.parse(xhttp.responseText);
+
+					if (resp["status"] == "failed"){
+						alert('failed')
+					}
+					if (resp["status"] == "success"){
+						alert('success')
+					}
+			  	}
+	  		}
+	  		xhttp.send(JSON.stringify({name:n, phone:p, country_code:cc, email:e, desc:d}));
+		}
+	};
+</script>
 </html>

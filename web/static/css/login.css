@@ -1,3 +1,6 @@
+:root{
+	--primary: #91a3b1;
+}
 *{
 	margin: 0px;
 }
@@ -10,28 +13,25 @@ body{
     align-content: center;
     justify-content: center;
     align-items: center;
+    gap: 20px;
 }
-body *{
-	margin-bottom: 20px;
-}
+
 input{
 	padding: 10px 20px 10px 5px ;
 }
 .logo{
-	display: flex;
-	flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+	width: 100vw;
 	position: absolute;
-	top:20px;
-	left: 20px;
+	top:0;
+	left: 0;
+	padding: 10px 50px 10px 50px;
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	background-color: var(--primary);
 }
-.square{
-	height: 30px;
-	width: 30px;
-	border-radius: 8px;
-	background-color: grey;
+.logo img{
+	height: 80px;
 }
 .actions{
 	display: flex;

@@ -1,5 +1,3 @@
-import time
-
 from flask import Flask, render_template, request
 from static.scripts import db_actions as db
 import json
@@ -27,6 +25,7 @@ def main_page():
     return render_template('main.html')
 
 
+# API
 @app.route('/login_action', methods=['POST'])
 def login_action():
     if request.headers['Web']:
@@ -51,3 +50,15 @@ def registration_action():
             return json.dumps({'status': 'success', 'username': e}), 200, {'ContentType': 'application/json'}
         else:
             return json.dumps({'status': 'failed'}), 200, {'ContentType': 'application/json'}
+
+
+@app.route('/new_request', methods=['POST'])
+def new_request():
+    if request.headers['Web']:
+        n = request.json['name']
+        p = request.json['phone']
+        cc = request.json['country_code']
+        e = request.json['email']
+        d = request.json['desc']
+        db.create_new_task(n, p, cc, e, d)
+        return json.dumps({'status': 'success', 'username': e}), 200, {'ContentType': 'application/json'}

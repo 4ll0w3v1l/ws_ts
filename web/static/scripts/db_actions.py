@@ -1,3 +1,4 @@
+from datetime import datetime as dt
 import sqlite3, hashlib
 
 db_path = 'static/data.db'
@@ -16,7 +17,6 @@ def create():
 
 def login(t, e, p):
     con = sqlite3.connect(db_path)
-
     cur = con.cursor()
     status = cur.execute(f'SELECT COUNT(1) FROM {t} WHERE email = ? AND password = ?',
                          (e, hashlib.sha256(p.encode()).hexdigest())).fetchall()
@@ -32,3 +32,18 @@ def register(t, e, n, p):
         return 1
     except:
         return 0
+
+
+def get_tasks():
+    con = sqlite3.connect(db_path)
+    cur = con.cursor()
+    num = cur.execute(f'SELECT * FROM tasks').fetchall()
+    return num
+
+
+def create_new_task(n, p, cc, e, d, c=None):
+    # NEED TO ADD CREATOR
+    con = sqlite3.connect(db_path)
+    cur = con.cursor()
+    cur.execute(f'INSERT INTO tasks(id, creation_date, status, client_name, client_phone, client_email, short_description) VALUES(?, ?, ?, ?, ?, ?, ?)', (1, dt.timestamp(dt.now()), "создан", n, str(cc) + str(p), e, d))
+    con.commit()

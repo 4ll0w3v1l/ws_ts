@@ -1,11 +1,13 @@
-*{
-	margin: 0px;
-}
-
 :root{
 	--primary: #91a3b1;
 }
+*{
+	margin: 0px;
 
+}
+body{
+	position: relative;
+}
 header{
 	padding: 10px 50px 10px 50px;
 	margin-bottom: 50px;
@@ -13,6 +15,12 @@ header{
 	align-items: center;
 	justify-content: space-between;
 	background-color: var(--primary);
+}
+input{
+	height: 30px;
+}
+button{
+	cursor: pointer;
 }
 .logo{
 	display: flex;
@@ -85,4 +93,64 @@ th {
 }
 th{
 	text-align: left;
+}
+.new_request_overlay_wrapper{
+	visibility: hidden;
+  	top: 0; left: 0; bottom: 0; right: 0;
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.new_request_overlay{
+	display: flex;
+	flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    background-color: white;
+	padding: 20px;
+	border: 3px solid;
+}
+.new_request_overlay .header{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.new_request_overlay .header img{
+	width: 20px;
+	cursor: pointer;
+}
+.new_request_overlay div{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 15px;
+}
+.description_div{
+	width: 100%;
+}
+#short_description{
+	width: 50%;
+}
+.send_req_wrapper{
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+
+}
+#send_request{
+	padding: 5px 10px 5px 10px;
+	background-color: #e2efda;
+}
+#send_request:hover{
+	padding: 5px 10px 5px 10px;
+	background-color: #e9efda;
+}
+#send_request:active{
+	padding: 5px 10px 5px 10px;
+	background-color: #f2ffda;
 }
