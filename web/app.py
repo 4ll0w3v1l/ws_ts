@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from static.scripts import db_actions as db
 import json
+from datetime import datetime as dt
 
 app = Flask(__name__)
 
@@ -22,7 +23,8 @@ def admin_panel():
 
 @app.route("/")
 def main_page():
-    return render_template('main.html')
+    table = db.get_tasks()
+    return render_template('main.html', table=table, l=len(table['id']))
 
 
 # API
@@ -62,3 +64,9 @@ def new_request():
         d = request.json['desc']
         db.create_new_task(n, p, cc, e, d)
         return json.dumps({'status': 'success', 'username': e}), 200, {'ContentType': 'application/json'}
+
+
+# JINJA FILTERS
+@app.template_filter('ctime')
+def timectime(s):
+    return dt.fromtimestamp(s).replace(second=0, microsecond=0)
