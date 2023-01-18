@@ -7,10 +7,12 @@
 	<link rel="stylesheet" href="static/css/login.css">
 </head>
 <body onload="onloadFunction()">
-	<div class="logo">
+	<header>
+		<div class="logo">
 			<img src="static/icons/logo.png">
 			<h3>ООО "ВЫСОКОТОЧНАЯ МЕХАНИКА"</h3>
 		</div>
+	</header>
 	<input id="email" type="email" name="email" placeholder="E-mail">
 	<input id="pass" type="password" name="password" placeholder="Password">
 	<div class="actions">
@@ -18,14 +20,13 @@
 	</div>
 </body>
 <script type="text/javascript">
-	
 	const xhttp = new XMLHttpRequest();
 	function onloadFunction() {
 		document.getElementsByClassName("actions")[0].style.width = document.getElementById("email").clientWidth + "px";
+		deleteAllCookies();
 	}
 
 	function login() {
-		
 		e = document.getElementById("email").value;
 		p =  document.getElementById("pass").value;
 		xhttp.open("POST", "/login_action", true);
@@ -34,12 +35,14 @@
   		xhttp.onload = function(){
   			if (xhttp.status == 200){
   				resp = JSON.parse(xhttp.responseText);
+  				console.log(resp[0]);
 
-				if (resp["status"] == "failed"){
+				if (resp[0]["status"] == "failed"){
 					alert('failed')
 				}
-				if (resp["status"] == "success"){
-					alert('success')
+				if (resp[0]["status"] == "success"){
+					document.cookie = "uId="+resp[0]['uId']
+					window.location.href = "/";
 				}
 		  	}
   		}
@@ -50,6 +53,16 @@
 	function redirect_to_reg(){
 		window.location.href = "/registration";
 	}
+	function deleteAllCookies() {
+    const cookies = document.cookie.split(";");
+
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i];
+        const eqPos = cookie.indexOf("=");
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+}
   	
 </script>
 </html>

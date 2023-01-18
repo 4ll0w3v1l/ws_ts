@@ -15,14 +15,9 @@
 		<img class="profile" src="static/icons/profile.png">
 	</header>
 	<main>
-		<div class="buttons">
-			<button>Заявки клиентов</button>
-			<button>Задачи производства</button>
-			<button>Заявки поставщикам</button>
-		</div>
 		<div class="requests">
 			<h1>Заявки клиентов</h1>
-			<button id="open_new_request">Добавить<img src="static/icons/plus.png"></button>
+			<button id="open_new_request" style="visibility:{{visibility}}">Добавить<img src="static/icons/plus.png"></button>
 		</div>
 		<table>
 			<thead>
@@ -35,13 +30,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for x in range(l) %}
-				<tr class="table_row" id="{{x + 1}}">
-					<th>{{table['id'][x]}}</th>
-					<th>{{table['creation_date'][x] | ctime}}</th>
-					<th>{{table['client_name'][x]}}</th>
-					<th>{{table['short_description'][x]}}</th>
-					<th>{{table['status'][x]}}</th>
+				{% for x in table['id']%}
+				<tr class="table_row" id="{{x[0]}}">
+					<th>{{table['id'][table['id'].index(x)][0]}}</th>
+					<th>{{table['creation_date'][table['id'].index(x)][0] | ctime}}</th>
+					<th>{{table['client_name'][table['id'].index(x)][0]}}</th>
+					<th>{{table['short_description'][table['id'].index(x)][0]}}</th>
+					<th>{{table['status'][table['id'].index(x)][0]}}</th>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -51,7 +46,7 @@
 		<div class="new_request_overlay">
 			<div class="header">
 				<h2>Новая заявка</h2>
-				<img src="static/icons/cross.png" onclick="hide_new_request()">
+				<img src="static/icons/cross.png" onclick="hide_new_request()" class="cross">
 			</div>
 			
 			<div>
@@ -66,7 +61,7 @@
 				<div>
 					<h3>Телефон клиента</h3>
 					<div style="display: flex; gap:5px">
-						<input id="client_phone_country" style="font-weight: bold; width:30px; text-align: right; " value="+7">
+						<input id="client_phone_country" style="font-weight: bold; width:30px; text-align: right;" value="+7">
 						<input id="client_phone" type="phone" name="phone" placeholder="123 123 1122"></p>
 					</div>
 				</div>
@@ -81,18 +76,146 @@
 			</div>
 			<p id="error" style="font-weight:bold; color: red; display: none;">Проверьте заполненность всех полей</p>
 			<div class="send_req_wrapper">
-				<button id="send_request">Сохранить</button>
+				<button id="send_request" class="green_btn">Сохранить</button>
 			</div>
 		</div>
 	</div>
-	<div class="task_editing_wrapper">
+	<div class="task_editing_wrapper" style="visibility: hidden;">
 		<div class="task_editing">
 			<div class="header_wrapper">
-				<div class="header">
-					<h2>Заявка № 1</h2>
-					<p> - статус</p>
+				<div class="header" style="gap:15px">
+					<h2>Заявка № <span style="border: none;" class="data">id</span></h2>
+					<p class="data"> - status</p>
 				</div>
-				<button>Разместить</button>
+				<button class="green_btn" id="publish">Разместить</button>
+				<img src="static/icons/cross.png" onclick="hide_task()" class="cross">
+			</div>
+			<div class="space_in_middle">
+				<h3>Клиент: <span style="font-weight:normal" class="data">client_name</span></h3>
+				<h3>Контакты: <span style="font-weight:normal" class="data">client_phone</span>, <span style="font-weight:normal" class="data">client_email</span></h3>
+			</div>
+			<div style="width:100%">
+				<h3 style="display: flex; align-items: center;width:100%">Описание: <textarea style="font-weight:normal; width:80%" class="data" readonly>short_description</textarea></h3>
+			</div>
+			<div class="space_in_middle">
+				<h3>Дата создания: <span style="font-weight:normal; border: none;" class="data">creation_date</span> </h3>
+				<h3>Создатель: <span style="font-weight:normal; border: none;" class="data">creator</span> </h3>
+			</div>
+			<div class="space_in_middle">
+				<h3>Последнее изменение: <span style="font-weight:normal; border: none;" class="data">last_reassignment</span></h3>
+				<h3>Cейчас работает: <span style="font-weight:normal; border: none;" class="data">current_worker</span></h3>
+			</div>
+			<div>
+				<h3 style="display:none;" id="poyasn_soobsh">Пояснительное сообщение: <span style="font-weight:normal;" class="data">description</span></h3>
+			</div>
+			<div class="chckbox_wrapper">
+				<div>
+					<input type="checkbox" id="prod_approved" name="approved" value="prod_approved" class="data_checkbox">
+					<label for="prod_approved">Согласовано с производством</label><br>
+				</div>
+				<div>
+					<input type="checkbox" id="econ_approved" name="approved" value="econ_approved" class="data_checkbox">
+					<label for="econ_approved">Согласовано с экономистами</label><br>
+				</div>
+			</div>
+			<div class="space_in_middle del_red_btn">
+				<button class="green_btn" style="background-color:lightgrey;" id="delete_task">Удалить</button>
+				<button class="green_btn" id="edit_task">Редактировать</button>
+				<button class="green_btn" id="save_task" style="display: none;">Cохранить</button>
+			</div>
+			<div class="space_in_middle" style="display:none" id="razm_buttons">
+				<button class="green_btn" style="background-color:lightgrey;" id="send_back">Отправить на доработку</button>
+				<button class="green_btn" id="accept_task">Принять</button>
+			</div>
+			<div class="space_in_middle">
+				<h2>Файлы заявки</h2>
+				<button class="green_btn add_new_doc_btn" onclick="show_add_new_doc()">Добавить</button>
+			</div>
+			<div style="width:100%;">
+				<table style="width:100%;">
+					<thead>
+						<tr>
+							<th>Наименование</th>
+							<th>Тип</th>
+							<th>Создатель</th>
+						</tr>
+					</thead>
+					<tbody class="table_">
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="add_new_doc_wrapper doc_wrapper">
+			<div class="add_new_doc doc">
+				<div class="header">
+					<h2>Добавление файла</h2>
+					<img src="static/icons/cross.png" class="cross" onclick="hide_add_new_doc()">
+				</div>
+				<div> 
+					<h3>Наименование: <span contenteditable="true" style="font-weight:normal;" class="data_docs" id="doc_name">doc_name</span></h3> 
+				</div>
+				<div>
+					<h3>Тип: <span contenteditable="true" style="font-weight:normal;" class="data_docs" id="doc_type">doc_type</span></h3> 
+				</div>
+				<div>
+					<h3>Документ: <input type="file" id="file" value="Выбрать файл"/></h3>
+				</div>
+				<div>
+					<button id="save_doc" class="green_btn">Сохранить</button>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="check_doc_wrapper doc_wrapper">
+			<div class="check_doc doc">
+				<div class="header">
+					<h2 id="doc_name_">doc_name</h2>
+					<img src="static/icons/cross.png" class="cross" onclick="hide_check_doc()">
+				</div>
+				<div> 
+					<h3>Cоздатель: <span style="font-weight:normal;" id="doc_creator_">creator</span></h3> 
+				</div>
+				<div>
+					<h3>Тип: <span style="font-weight:normal;" id="doc_type_">doc_type</span></h3> 
+				</div>
+				<div class="space_in_middle">
+					<h3>Документ: <a href="#" id="doc_path_">doc_name</a></h3>
+				</div>
+				<div class="space_in_middle">
+					<button id="delete_doc" class="green_btn" style="background-color: lightgrey;">Удалить</button>
+					<button id="edit_doc" class="green_btn">Изменить</button>
+				</div>
+
+			</div>
+		</div>
+		<div class="edit_doc_wrapper doc_wrapper">
+			<div class="edit_doc doc">
+				<div class="header">
+					<h2>Изменение</h2><h2 id="doc_name_1">doc_name</h2>
+					<img src="static/icons/cross.png" class="cross" onclick="hide_edit_doc()">
+				</div>
+				<div> 
+					<h3>Наименование: <span contenteditable="true" style="font-weight:normal;" id="doc_name_1_">doc_name</span></h3> 
+				</div>
+				<div>
+					<h3>Тип: <span contenteditable="true" style="font-weight:normal;" id="doc_type_1">doc_type</span></h3> 
+				</div>
+				<div style="width:100%" class="space_in_middle">
+					<h3>Документ: <a href="#" id="doc_path_1">doc_name</a></h3> 
+					<label for="swap_file"><img id="change_doc_btn" style="height: 20px; cursor:pointer;" src="static/icons/swap.png"></label>
+					<input id="swap_file" style="display:none;" type="file"></input>
+					
+				</div>
+				<button class="green_btn" id="swap_file_btn">Сохранить</button>
+
+			</div>
+		</div>
+		<div class="send_back_wrapper doc_wrapper" >
+			<div class="edit_doc task" style="background-color:white; padding: 20px; border: solid black 3px">
+				<h3>Укажите причину отправки на доработку:</h3>
+				<textarea style="width:90%" id="send_back_reason"></textarea>
+				<button class="green_btn" id="send_back_action">Отправить</button>
 			</div>
 		</div>
 	</div>
@@ -100,18 +223,38 @@
 <script type="text/javascript">
 	const xhttp = new XMLHttpRequest();
 
-	document.getElementById("open_new_request").addEventListener("click", function(){open_new_request()}, false);
-	document.getElementById("send_request").addEventListener("click", function(){send_new_request()}, false);
 	let rows = document.getElementsByClassName("table_row");
+	let usable_id = -1;
+	let doc_id = -1;
+	let path_to_file = "";
 	for (let i = 0; i<rows.length; i++){
-		rows[i].addEventListener("click", function(){edit_task(this.id)}, false);
-	}
-
+		rows[i].addEventListener("click", function(){open_task(this.id)}, false);
+	};
 	function open_new_request(){
 		document.getElementsByClassName("new_request_overlay_wrapper")[0].style.visibility = "visible";
 	};
+	function show_add_new_doc(){
+		document.getElementsByClassName("add_new_doc_wrapper")[0].style.visibility = "visible";
+	};
+	function show_doc_editor(){
+		document.getElementsByClassName("edit_doc_wrapper")[0].style.visibility = "visible";
+	};
 	function hide_new_request(){
 		document.getElementsByClassName("new_request_overlay_wrapper")[0].style.visibility = "hidden";
+		window.location.reload();
+	};
+	function hide_task(){
+		document.getElementsByClassName("task_editing_wrapper")[0].style.visibility = "hidden";
+		usable_id = -1;
+		window.location.reload();
+	};
+	function hide_add_new_doc(){
+		document.getElementsByClassName("add_new_doc_wrapper")[0].style.visibility = "hidden";
+	};
+	function hide_check_doc(){
+		document.getElementsByClassName("check_doc_wrapper")[0].style.visibility = "hidden";
+		path_to_file="";
+		doc_id=-1;
 	};
 	function hide_error(){
 		return new Promise(() => {
@@ -120,6 +263,31 @@
 			}, 2000);
 		})
 	};
+	function hide_edit_doc(){
+		document.getElementsByClassName("edit_doc_wrapper")[0].style.visibility = "hidden";
+	}
+	function open_send_back(){
+		document.getElementsByClassName("send_back_wrapper")[0].style.visibility = "visible";
+	}
+
+	function change_status(stat){
+		xhttp.open("POST", "/publish", true);
+	  	xhttp.setRequestHeader("Content-Type", "application/json");
+	  	xhttp.setRequestHeader("Web", "1");
+	  	xhttp.onload = function(){
+	  		if (xhttp.status == 200){
+				resp = JSON.parse(xhttp.responseText);
+				if (resp[0]["status"] == "failed"){
+					alert('failed')
+				}
+				if (resp[0]["status"] == "success"){
+					alert('success')
+					window.location.reload();
+				}
+			}
+	  	}
+	  	xhttp.send(JSON.stringify({id:usable_id, status: stat}));
+	}
 	function send_new_request(){
 		n = document.getElementById("client_name").value;
 		p = document.getElementById("client_phone").value;
@@ -141,15 +309,227 @@
 						alert('failed')
 					}
 					if (resp["status"] == "success"){
-						alert('success')
+						alert("success")
+						window.location.reload();
 					}
 			  	}
 	  		}
 	  		xhttp.send(JSON.stringify({name:n, phone:p, country_code:cc, email:e, desc:d}));
 		}
 	};
-	function edit_task(id){
-		alert(id);
+	function send_docs(file_id, doc_name, doc_type, uri){
+		let file = document.getElementById(file_id).files[0];
+		let dn = document.getElementById(doc_name).innerHTML;
+    	let dt = document.getElementById(doc_type).innerHTML;
+		let formData = new FormData();
+		formData.append("file", file);
+		formData.append("dn", dn);
+		formData.append("dt", dt);
+		formData.append("t_id", usable_id);
+		formData.append("id", doc_id);
+		xhttp.open("POST", uri, true);
+	  	xhttp.onload = function(){
+	  		if (xhttp.status == 200){
+				resp = JSON.parse(xhttp.responseText);
+				if (resp[0]["status"] == "failed"){
+					alert('failed')
+				}
+				if (resp[0]["status"] == "success"){
+					alert("success")
+					window.location.reload();
+				}
+			}
+	  	}
+	  	xhttp.send(formData);
+	};
+	function save_task(){
+		xhttp.open("POST", "/save_task", true);
+	  	xhttp.setRequestHeader("Content-Type", "application/json");
+	  	xhttp.setRequestHeader("Web", "1");
+	  	xhttp.onload = function(){
+	  		if (xhttp.status == 200){
+				resp = JSON.parse(xhttp.responseText);
+				if (resp[0]["status"] == "failed"){
+					alert('failed')
+				}
+				if (resp[0]["status"] == "success"){
+					alert('success')
+					window.location.reload();
+				}
+			}
+	  	}
+	  	let data = document.getElementsByClassName('data');
+	  	xhttp.send(JSON.stringify({id: usable_id, client: data[2].innerHTML, phone: data[3].innerHTML, email: data[4].innerHTML, short_desc: data[5].value, desc: data[10].innerHTML, prod: document.getElementById("prod_approved").checked, econ: document.getElementById("econ_approved").checked
+}));
 	}
+	function edit_task(){
+		let data = document.getElementsByClassName("data");
+		for (let i=0; i<data.length; i++){
+			if (i == 2 || i == 3|| i==4||i==5){
+				data[i].contentEditable=true;
+			};
+			if (i==5){
+				data[i].readOnly=false;
+			}
+		}
+		document.getElementById("edit_task").style.display = "none";
+		document.getElementById("delete_task").style.visibility = "hidden";
+		document.getElementById("save_task").style.display = ""
+	};
+	function open_doc_editor(id){
+		doc_id = id;
+		document.getElementsByClassName("check_doc_wrapper")[0].style.visibility="visible";
+		xhttp.open("POST", "/open_doc_editor", true);
+	  	xhttp.setRequestHeader("Content-Type", "application/json");
+	  	xhttp.setRequestHeader("Web", "1");
+	  	xhttp.onload = function(){
+	  		resp = JSON.parse(xhttp.responseText);
+			if (resp[0]["status"] == "failed"){
+				alert('failed')
+			}
+			if (resp[0]["status"] == "success"){
+				document.getElementsByClassName("check_doc_wrapper")[0].style.visibility="visible";
+				document.getElementById("doc_name_").innerHTML = resp[1]['doc_name'];
+				document.getElementById("doc_creator_").innerHTML = resp[1]['creator'];
+				document.getElementById("doc_type_").innerHTML = resp[1]['doc_type'];
+				path_to_file = usable_id + "/" + resp[1]['doc_path'];
+				document.getElementById("doc_path_").innerHTML = resp[1]['doc_path']
+				document.getElementById("doc_path_").href = "/download?task_id="+usable_id+"&f_name="+resp[1]['doc_path'];
+
+				document.getElementById("doc_name_1").innerHTML = document.getElementById("doc_name_").innerHTML;
+				document.getElementById("doc_name_1_").innerHTML = document.getElementById("doc_name_").innerHTML;
+				document.getElementById("doc_type_1").innerHTML = document.getElementById("doc_type_").innerHTML;
+				document.getElementById("doc_path_1").innerHTML = resp[1]['doc_path']
+				document.getElementById("doc_path_1").href = "/download?task_id="+usable_id+"&f_name="+resp[1]['doc_path'];
+			}
+	  	}
+	  	xhttp.send(JSON.stringify({id:id, task_id:usable_id}));
+	};
+	function delete_doc(t){
+		xhttp.open("POST", "/delete_doc", true);
+	  	xhttp.setRequestHeader("Content-Type", "application/json");
+	  	xhttp.setRequestHeader("Web", "1");
+	  	xhttp.onload = function(){
+	  		resp = JSON.parse(xhttp.responseText);
+	  		if(resp[0]["status"] == "success"){
+	  			alert("success");
+	  			window.location.reload();
+	  		}
+	  	}
+	  	xhttp.send(JSON.stringify({id:doc_id, t_id: usable_id, path:path_to_file, type:t}));
+	};
+	function accept_task(){
+		xhttp.open("POST", "/accept_task", true);
+	  	xhttp.setRequestHeader("Content-Type", "application/json");
+	  	xhttp.setRequestHeader("Web", "1");
+	  	xhttp.onload = function(){
+	  		if(resp[0]["status"] == "success"){
+	  			alert("success");
+	  			window.location.reload();
+	  		}
+	  	}
+	  	xhttp.send(JSON.stringify({id:usable_id, status:"Принята на рассмотрение"}))
+	};
+	function open_task(id){
+		usable_id = id;
+		xhttp.open("POST", "/open_task_editor", true);
+	  	xhttp.setRequestHeader("Content-Type", "application/json");
+	  	xhttp.setRequestHeader("Web", "1");
+	  	xhttp.onload = function(){
+	  		if (xhttp.status == 200){
+				resp = JSON.parse(xhttp.responseText);
+				if (resp[0]["status"] == "failed"){
+					alert('failed')
+				}
+				if (resp[0]["status"] == "success"){
+					document.getElementsByClassName("task_editing_wrapper")[0].style.visibility="visible";
+					data = document.getElementsByClassName("data");
+					for (let i = 0; i < data.length; i++){
+						data[i].innerHTML = resp[1][i];
+					}
+					if (resp[1][1] == 'Проект'){
+						for (let i = 8; i<11; i++){
+							data[i].parentElement.style.display = 'none';
+						}
+						document.getElementsByClassName("chckbox_wrapper")[0].style.display = 'none';
+					};
+					if (resp[1][1] == 'Размещена'){
+						let et = document.getElementById("edit_task");
+						document.getElementById("publish").style.display = "none";
+						et.parentElement.style.display = "none";
+						document.getElementsByClassName("chckbox_wrapper")[0].style.display = 'none';
+						document.getElementById('razm_buttons').style.display = "";
+					};
+					if (resp[1][1] == 'Изменение'){
+						document.getElementById("publish").style.display = "none";
+						document.getElementsByClassName("chckbox_wrapper")[0].style.display = 'none';
+						document.getElementById("poyasn_soobsh").style.display = "";
+					};
+					if (resp[1][1] == 'Принята на рассмотрение'){
+						document.getElementById("publish").style.display = "none";
+						document.getElementsByClassName("del_red_btn")[0].style.display = "none";
+						document.getElementsByClassName("add_new_doc_btn")[0].style.display = "none";
+					};
+					data = document.getElementsByClassName("data_checkbox");
+					for (let i = 0; i < data.length; i++){
+						if (resp[2][i] == 1){
+							data[i].checked = true
+						}else{
+							data[i].checked = false
+						}
+					};
+					table = document.getElementsByClassName("table_")[0];
+					for(let i = 0; i < resp[3][0].length; i++){
+						let row = table.insertRow(i);
+						for(let x = 0; x<resp[3].length; x++){
+							let cell = row.insertCell(-1);
+							cell.innerHTML = resp[3][x][i];
+						}
+						row.className = "data_row";
+						row.dataset.num = i+1;
+					}
+					if (resp[4]["access"] == "r"){
+						document.getElementById('razm_buttons').style.display = "none";
+					}
+					let r = document.getElementsByClassName("data_row");
+					for (let i = 0; i<r.length; i++){r[i].addEventListener("click", function(){open_doc_editor(this.dataset.num)});}
+					
+				}
+				if (resp[0]["status"] == "access_denied"){
+					alert("access denied");
+				}
+
+			}
+	  	}
+	  	xhttp.send(JSON.stringify({table_id:id}));
+
+	};
+	function send_back(){
+		r = document.getElementById("send_back_reason").value;
+		xhttp.open("POST", "/reject", true);
+	  	xhttp.setRequestHeader("Content-Type", "application/json");
+	  	xhttp.setRequestHeader("Web", "1");
+	  	xhttp.onload = function(){
+	  		if(resp[0]["status"] == "success"){
+	  			alert("success");
+	  			window.location.reload();
+	  		}
+	  	}
+	  	xhttp.send(JSON.stringify({id:usable_id, status:"Изменение", reason: r}))
+	};
+
+	document.getElementById("open_new_request").addEventListener("click", function(){open_new_request()}, false);
+	document.getElementById("send_request").addEventListener("click", function(){send_new_request()}, false);
+	document.getElementById("save_doc").addEventListener("click", function(){send_docs("file", "doc_name", "doc_type", "/upload_docs")}, false);
+	document.getElementById("delete_doc").addEventListener("click", function(){delete_doc('doc')}, false);
+	document.getElementById("edit_doc").addEventListener("click", function(){show_doc_editor()}, false);
+	document.getElementById("swap_file_btn").addEventListener("click", function(){send_docs("swap_file", "doc_name_1_", "doc_type_1", "/update_doc")}, false);
+	document.getElementById("save_task").addEventListener("click", function(){save_task()}, false);
+	document.getElementById("publish").addEventListener("click", function(){change_status("Размещена")}, false);
+	document.getElementById("delete_task").addEventListener("click", function(){delete_doc('task')}, false);
+	document.getElementById("edit_task").addEventListener("click", function(){edit_task()}, false);
+	document.getElementById("send_back").addEventListener("click", function(){open_send_back()}, false);
+	document.getElementById("send_back_action").addEventListener("click", function(){send_back()}, false);
+	document.getElementById("accept_task").addEventListener("click", function(){accept_task()}, false);
 </script>
 </html>

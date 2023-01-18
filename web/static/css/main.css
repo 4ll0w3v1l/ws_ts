@@ -7,6 +7,8 @@
 }
 body{
 	position: relative;
+	min-height: 100vh;
+	width: 100vw;
 }
 header{
 	padding: 10px 50px 10px 50px;
@@ -21,6 +23,12 @@ input{
 }
 button{
 	cursor: pointer;
+}
+span{
+	border: solid 1px;
+	border-radius: 2px;
+	padding: 3px;
+	line-height: 30px;
 }
 .logo{
 	display: flex;
@@ -81,6 +89,7 @@ button img{
 	height: 20px;
 }
 table {
+	width: 100%;
     border-collapse: collapse;
     letter-spacing: 1px;
 }
@@ -90,9 +99,11 @@ thead{
 td,
 th {
     border: 1px solid ;
+    word-wrap: break-word;
 }
 th{
 	text-align: left;
+	word-wrap: break-word
 }
 tbody tr{
 	cursor: pointer;
@@ -105,7 +116,7 @@ tbody tr:hover{
   	top: 0; left: 0; bottom: 0; right: 0;
 	position: absolute;
 	width: 100vw;
-	height: 100vh;
+	height: 100%;
 	display: flex;
 	align-items: center;
     justify-content: center;
@@ -126,7 +137,7 @@ tbody tr:hover{
 	justify-content: space-between;
 	align-items: center;
 }
-.new_request_overlay .header img{
+.cross{
 	width: 20px;
 	cursor: pointer;
 }
@@ -148,15 +159,15 @@ tbody tr:hover{
 	justify-content: flex-end;
 
 }
-#send_request{
+.green_btn{
 	padding: 5px 10px 5px 10px;
 	background-color: #e2efda;
 }
-#send_request:hover{
+.green_btn:hover{
 	padding: 5px 10px 5px 10px;
 	background-color: #e9efda;
 }
-#send_request:active{
+.green_btn:active{
 	padding: 5px 10px 5px 10px;
 	background-color: #f2ffda;
 }
@@ -164,17 +175,18 @@ tbody tr:hover{
   	top: 0; left: 0; bottom: 0; right: 0;
 	position: absolute;
 	width: 100vw;
-	height: 100vh;
+	height: 100%;
 	display: flex;
 	align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.2);
 }
 .task_editing{
+	max-width: 80vw;
 	display: flex;
 	flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
+    gap: 30px;
     background-color: white;
 	padding: 20px;
 	border: 3px solid;
@@ -187,8 +199,59 @@ tbody tr:hover{
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: 15px;
+	gap: 50px;
 }
 .task_editing .header_wrapper{
+	width: 100%;
 	display: flex;
+	justify-content: space-between;
+}
+.space_in_middle{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+.chckbox_wrapper{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+}
+.chckbox_wrapper div{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+}
+.doc_wrapper{
+	visibility: hidden;
+	top: 0; left: 0; bottom: 0; right: 0;
+	position: absolute;
+	width: 100vw;
+	height: 100%;
+	display: flex;
+	align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.doc{
+	display: flex;
+	flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+    background-color: white;
+	padding: 20px;
+	border: 3px solid;
+}
+.doc div{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 50px;
+}
+.doc .header{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }

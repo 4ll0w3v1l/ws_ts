@@ -7,30 +7,52 @@
 	<link rel="stylesheet" href="static/css/login.css">
 </head>
 <body onload="onloadFunction()">
-	<div class="logo">
-		<div class="square"></div>
-		<h3>ВЫСОКОТОЧНАЯ МЕХАНИКА</h3>
-	</div>
+	<header>
+		<div class="logo">
+			<img src="static/icons/logo.png">
+			<h3>ООО "ВЫСОКОТОЧНАЯ МЕХАНИКА"</h3>
+		</div>
+	</header>
 	<input id="name" type="name" name="name" placeholder="Your name">
 	<input id="email" type="email" name="email" placeholder="E-mail">
 	<input id="pass" type="password" name="password" placeholder="Password">
+	<div class="dropdown">
+  		<button class="dropbtn">Роль</button>
+  		<div class="dropdown-content">
+  			<span class="role">Сотрудник отдела по работе с клиентами</span>
+  			<span class="role">Начальник отдела по работе с клиентами</span>
+  			<span class="role">Сотрудник экономического отдела</span>
+  			<span class="role">Начальник экономического отдела</span>
+  			<span class="role">Сотрудник производства</span>
+  			<span class="role">Начальник производства</span>
+  			<span class="role">Сотрудник отдела логистики</span>
+  			<span class="role">Начальник отдела логистики</span>
+  			<span class="role">Директор</span>
+  		</div>
+	</div>
 	<div class="actions">
 		<button id="login_btn" onclick="login()">Register</button>
-		<p onclick="redirect_to_reg()" class="reg_btn">Log in?</p>
 	</div>
 </body>
 <script type="text/javascript">
 	
 	const xhttp = new XMLHttpRequest();
+	let rows = document.getElementsByClassName("role");
+	for (let i = 0; i<rows.length; i++){
+		rows[i].addEventListener("click", function(){changeRole(this.innerHTML)}, false);
+	};
 	function onloadFunction() {
 		document.getElementsByClassName("actions")[0].style.width = document.getElementById("email").clientWidth + "px";
 	}
-
+	function changeRole(val) {
+		document.getElementsByClassName("dropbtn")[0].innerHTML = val;
+	}
 	function login() {
 		
 		e = document.getElementById("email").value;
 		p = document.getElementById("pass").value;
 		n = document.getElementById("name").value;
+		r = document.getElementsByClassName("dropbtn")[0].innerHTML;
 		xhttp.open("POST", "/registration_action", true);
   		xhttp.setRequestHeader("Content-Type", "application/json");
   		xhttp.setRequestHeader("Web", "1");
@@ -47,11 +69,8 @@
 		  	}
   		}
 
-		xhttp.send(JSON.stringify({name: n, email:e, password:p}));
+		xhttp.send(JSON.stringify({name: n, email:e, password:p, role:r}));
 		
-	}
-	function redirect_to_reg(){
-		window.location.href = "/login";
 	}
   	
 </script>
